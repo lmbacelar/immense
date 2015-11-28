@@ -1,0 +1,25 @@
+header.content_title
+  h1= @instrument.reference
+
+section.content
+  section.details
+    h3= @instrument.designation
+    section.primary_details
+      dl
+        dt Manufacturer
+        dd= @instrument.manufacturer
+        dt Model
+        dd= @instrument.model
+        dt Serial Number
+        dd= @instrument.serial_number
+        dt Part Number
+        dd= @instrument.part_number
+    section.secondary_details
+      dl
+        dt Remarks
+        dd= @instrument.remarks
+
+  section.actions
+    = link_to 'Edit', edit_instrument_path(@instrument), class: :default
+    = link_to 'Destroy', @instrument, method: :delete, data: { confirm: 'Are you sure?' }, class: :danger
+    = link_to 'Back to instrument list', instruments_path, class: :info

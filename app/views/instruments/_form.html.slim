@@ -1,0 +1,19 @@
+section.content
+  = simple_form_for @instrument, html: { class: :highlight } do |f|
+      = f.error_notification
+      = f.error :base
+
+      fieldset
+        section.primary_details
+          = f.input :reference
+          = f.input :designation
+          = f.input :manufacturer
+          = f.input :model
+          = f.input :serial_number
+        section.secondary_details
+          = f.input :part_number
+          = f.input :remarks
+
+      section.actions
+        = f.button :submit, data: { disable_with: 'Submitting...' }, class: :primary
+        = link_to 'Back to instrument list', instruments_path, class: :info

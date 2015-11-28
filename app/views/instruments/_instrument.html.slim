@@ -1,0 +1,10 @@
+- present instrument do |i|
+  section.summary
+    header.reference
+      h3= i.reference
+    section.summary-details
+      h4= i.designation
+      p= i.details
+    section.summary-actions
+      = i.edit_link
+      = i.destroy_link
