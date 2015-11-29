@@ -9,8 +9,9 @@ section.content
         span
           = submit_tag 'Go!', name: nil
     section.search_actions
-      span Or
-      = link_to 'Add New', new_instrument_path, class: :primary
+      - if policy(Instrument).new?
+        span Or
+        = link_to 'Add New', new_instrument_path, class: :primary
 
   section.search_results
     - if @instruments.empty?

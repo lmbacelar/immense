@@ -12,14 +12,24 @@ class InstrumentPresenter < BasePresenter
   end
 
   def reference
-    h.link_to instrument.reference, instrument
+    if h.policy(instrument).show?
+      h.link_to instrument.reference, instrument
+    else
+      instrument.reference
+    end
   end
 
   def edit_link
-    h.link_to 'Edit', h.edit_instrument_path(instrument), class: :default
+    if h.policy(instrument).edit?
+      h.link_to 'Edit', h.edit_instrument_path(instrument), class: :default
+    end
   end
 
   def destroy_link
-    h.link_to 'Destroy', instrument, method: :delete, data: { confirm: 'Are you sure?' }, class: :danger
+    if h.policy(instrument).destroy?
+      h.link_to 'Destroy', instrument, method: :delete,
+                                       data: { confirm: 'Are you sure?' },
+                                       class: :danger
+    end
   end
 end
