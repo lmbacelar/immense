@@ -1,6 +1,9 @@
 class Instrument < ActiveRecord::Base
   validates :reference,   presence: true, uniqueness: true
   validates :designation, presence: true
+  validates :user,        presence: true
+
+  belongs_to :user
 
   extend FriendlyId
   friendly_id :reference, use: :slugged
@@ -15,7 +18,6 @@ class Instrument < ActiveRecord::Base
                      using: { tsearch: {
                                  dictionary: 'english',
                                  prefix: true } }
-
   def self.search query
     if query.present?
       full_text_search query
