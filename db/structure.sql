@@ -77,7 +77,8 @@ CREATE TABLE instruments (
     remarks text DEFAULT ''::text NOT NULL,
     slug character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    user_id integer NOT NULL
 );
 
 
@@ -125,7 +126,6 @@ CREATE TABLE users (
     last_sign_in_at timestamp without time zone,
     current_sign_in_ip inet,
     last_sign_in_ip inet,
-    name character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -238,6 +238,13 @@ CREATE UNIQUE INDEX index_instruments_on_slug ON instruments USING btree (slug);
 
 
 --
+-- Name: index_instruments_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_instruments_on_user_id ON instruments USING btree (user_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -294,16 +301,24 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
+-- Name: fk_rails_607dc78dbe; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY instruments
+    ADD CONSTRAINT fk_rails_607dc78dbe FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user",public;
+
+INSERT INTO schema_migrations (version) VALUES ('20151124112433');
 
 INSERT INTO schema_migrations (version) VALUES ('20151125205939');
 
 INSERT INTO schema_migrations (version) VALUES ('20151128170132');
 
 INSERT INTO schema_migrations (version) VALUES ('20151128182408');
-
-INSERT INTO schema_migrations (version) VALUES ('20151129112433');
 

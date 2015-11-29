@@ -8,14 +8,14 @@ class CreateInstruments < ActiveRecord::Migration
       t.string  :part_number,   null: false, default: ''
       t.string  :serial_number, null: false, default: ''
       t.text    :remarks,       null: false, default: ''
-
       t.string  :slug,          null: false
+      t.timestamps              null: false
 
-      t.timestamps null: false
+      t.references :user,       null: false, index: true
 
       t.index :reference, unique: true
       t.index :slug     , unique: true
     end
-    
+    add_foreign_key :instruments, :users
   end
 end
