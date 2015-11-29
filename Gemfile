@@ -16,6 +16,7 @@ gem 'will_paginate-bootstrap', '~> 1.0', '>= 1.0.1'
 gem 'friendly_id', '~> 5.1'
 gem 'pg_search', '~> 1.0', '>= 1.0.5'
 gem 'devise', '~> 3.5', '>= 3.5.2'
+gem 'pundit', '~> 1.0', '>= 1.0.1'
 
 group :development, :test do
   gem 'byebug'
