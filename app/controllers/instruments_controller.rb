@@ -3,7 +3,7 @@ class InstrumentsController < ApplicationController
 
   def index
     @query = params[:query]
-    @instruments = Instrument.search @query
+    @instruments = Instrument.search(@query).page params[:page]
   end
 
   def show

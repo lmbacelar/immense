@@ -12,6 +12,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'slim-rails', '~> 3.0', '>= 3.0.1'
 gem 'simple_form', '~> 3.2'
+gem 'will_paginate-bootstrap', '~> 1.0', '>= 1.0.1'
 
 gem 'pg_search', '~> 1.0', '>= 1.0.5'
 
