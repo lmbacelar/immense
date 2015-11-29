@@ -10,14 +10,14 @@ class InstrumentsController < ApplicationController
   end
 
   def new
-    @instrument = Instrument.new
+    @instrument = current_user.instruments.new
   end
 
   def edit
   end
 
   def create
-    @instrument = Instrument.new instrument_params
+    @instrument = current_user.instruments.new instrument_params
 
     respond_to do |format|
       if @instrument.save
