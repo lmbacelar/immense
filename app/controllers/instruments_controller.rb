@@ -4,6 +4,7 @@ class InstrumentsController < ApplicationController
   def index
     @query = params[:query]
     @instruments = Instrument.search(@query).page params[:page]
+    authorize @instruments
   end
 
   def show
@@ -11,6 +12,7 @@ class InstrumentsController < ApplicationController
 
   def new
     @instrument = current_user.instruments.new
+    authorize @instrument
   end
 
   def edit
@@ -18,6 +20,7 @@ class InstrumentsController < ApplicationController
 
   def create
     @instrument = current_user.instruments.new instrument_params
+    authorize @instrument
 
     respond_to do |format|
       if @instrument.save
@@ -53,6 +56,7 @@ class InstrumentsController < ApplicationController
   private
     def set_instrument
       @instrument = Instrument.friendly.find params[:id]
+      authorize @instrument
     end
 
     def instrument_params
