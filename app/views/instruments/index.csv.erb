@@ -1,0 +1,4 @@
+reference,designation,manufacturer,model,part_number,serial_number,remarks
+<%- @matches.each do |i| %>
+<%= [i.reference, i.designation, i.manufacturer, i.model, i.part_number, i.serial_number, i.remarks].join(',') %>
+<% end %>

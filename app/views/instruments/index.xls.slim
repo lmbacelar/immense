@@ -1,0 +1,18 @@
+table
+  tr
+    th Reference
+    th Designation
+    th Manufacturer
+    th Model
+    th Part Number
+    th Serial Number
+    th Remarks
+  - @matches.each do |instrument|
+    tr
+      td= instrument.reference
+      td= instrument.designation
+      td= instrument.manufacturer
+      td= instrument.model
+      td= instrument.part_number
+      td= instrument.serial_number
+      td= instrument.remarks
