@@ -3,8 +3,15 @@ class InstrumentsController < ApplicationController
 
   def index
     @query = params[:query]
-    @instruments = Instrument.search(@query).page params[:page]
+    matches = Instrument.search @query
+    @instruments = matches.page params[:page]
     authorize @instruments
+
+    respond_to do |format|
+      format.html
+      format.json { render json: matches }
+      format.csv  { send_data matches.to_csv }
+    end
   end
 
   def show
