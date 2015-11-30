@@ -25,4 +25,13 @@ class Instrument < ActiveRecord::Base
       order 'created_at DESC'
     end
   end
+
+  def self.to_csv columns: %w{reference designation manufacturer model serial_number part_number remarks}
+    CSV.generate do |csv|
+      csv << columns
+      all.each do |instrument|
+        csv << instrument.attributes.values_at(*columns)
+      end
+    end
+  end
 end
