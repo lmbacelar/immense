@@ -14,7 +14,7 @@ section.content
         = link_to 'Add New', new_instrument_path, class: :primary
 
   section.search_results
-    - if @instruments.empty?
+    - if @paged_instruments.empty?
       p No instruments found.
     - else
       p
@@ -22,8 +22,8 @@ section.content
         = link_to 'CSV', instruments_path(params.merge(format: :csv))
         |  | 
         = link_to 'XLS', instruments_path(params.merge(format: :xls))
-      == render @instruments
-      = paginate @instruments
+      == render @paged_instruments
+      = paginate @paged_instruments
 
 section.sidebar
   h3 Lorem Ipsum

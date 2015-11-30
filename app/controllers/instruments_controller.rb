@@ -3,13 +3,13 @@ class InstrumentsController < ApplicationController
 
   def index
     @query = params[:query]
-    @matches = Instrument.search @query
-    @instruments = @matches.page params[:page]
-    authorize @instruments
+    @instruments = Instrument.search @query
+    @paged_instruments = @instruments.page params[:page]
+    authorize @paged_instruments
 
     respond_to do |format|
       format.html
-      format.json { render json: @matches   }
+      format.json
       format.csv  { set_filename_and_render }
       format.xls  { set_filename_and_render }
     end
