@@ -1,5 +1,8 @@
-users = [ { email: 'lmbacelar@gmail.com',   password: '00000000', password_confirmation: '00000000' },
-          { email: 'another_user@test.com', password: '00000000', password_confirmation: '00000000' } ]
+users = [ { email: 'admin@test.com',    password: '00000000', password_confirmation: '00000000', role: 'admin'   },
+          { email: 'manager1@test.com', password: '00000000', password_confirmation: '00000000', role: 'manager' },
+          { email: 'manager2@test.com', password: '00000000', password_confirmation: '00000000', role: 'manager' },
+          { email: 'auditor@test.com',  password: '00000000', password_confirmation: '00000000', role: 'auditor' },
+          { email: 'guest@test.com',    password: '00000000', password_confirmation: '00000000', role: 'guest'   } ]
 users.each { |u| User.create u }
 
 instruments1 = [ { reference: 'MUL001', 
@@ -44,5 +47,5 @@ instruments2 = [ { reference: 'MUL004',
                    model: 'BD16', 
                    serial_number: '78851' } ]
 
-instruments1.each { |i| User.first.instruments.create i }
-instruments2.each { |i| User.last.instruments.create i }
+instruments1.each { |i| User.where(role: 'manager').first.instruments.create i }
+instruments2.each { |i| User.where(role: 'manager').last.instruments.create i }
