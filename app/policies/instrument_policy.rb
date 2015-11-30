@@ -1,17 +1,17 @@
 class InstrumentPolicy < ApplicationPolicy
   def index?
-    true
+    admin? || manager? || auditor?
   end
 
   def create?
-    true
+    admin? || manager?
   end
 
   def update?
-    owner?
+    admin? || (manager? && owner?)
   end
 
   def destroy?
-    owner?
+    admin? || (manager? && owner?)
   end
 end
