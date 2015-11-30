@@ -5,7 +5,7 @@ section.content
   section.search_form
     = form_tag instruments_path, method: :get do
       div.search_field_button
-        = text_field_tag  :query, @query, placeholder: 'Search for an Instrument ...'
+        = text_field_tag  :query, @query, autofocus: true, placeholder: 'Search for an Instrument ...'
         span
           = submit_tag 'Go!', name: nil
     section.search_actions

@@ -9,9 +9,9 @@ class InstrumentsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: @matches }
-      format.csv
-      format.xls
+      format.json { render json: @matches   }
+      format.csv  { set_filename_and_render }
+      format.xls  { set_filename_and_render }
     end
   end
 
@@ -73,5 +73,10 @@ class InstrumentsController < ApplicationController
 
     def search_params
       params.require(:search).permit(:query)
+    end
+
+    def set_filename_and_render
+      filename = "instruments_#{Time.zone.now.strftime('%Y%m%d_%H%M%S')}.#{params[:format]}"
+      response.headers["Content-Disposition"] = "attachment; filename=\"#{filename}\""
     end
 end
