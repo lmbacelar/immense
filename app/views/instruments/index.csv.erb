@@ -1,4 +1,0 @@
-<%= Instrument::IMPORT_ATTRS.join ',' %>
-<%- @instruments.each do |i| %>
-<%= Instrument::IMPORT_ATTRS.map { |a| i.send a }.join(',') %>
-<% end %>

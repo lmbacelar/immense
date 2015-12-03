@@ -1,8 +1,0 @@
-table
-  tr
-    - Instrument::IMPORT_ATTRS.each do |attribute|
-      th= attribute
-  - @instruments.each do |instrument|
-    tr
-      - Instrument::IMPORT_ATTRS.each do |attribute|
-        td= instrument.send attribute

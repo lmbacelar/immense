@@ -10,8 +10,8 @@ class InstrumentsController < ApplicationController
     respond_to do |format|
       format.html
       format.json
+      format.xlsx { set_filename_and_render }
       format.csv  { set_filename_and_render }
-      format.xls  { set_filename_and_render }
     end
   end
 
@@ -76,7 +76,10 @@ class InstrumentsController < ApplicationController
     end
 
     def set_filename_and_render
-      filename = "instruments_#{Time.zone.now.strftime('%Y%m%d_%H%M%S')}.#{params[:format]}"
-      response.headers["Content-Disposition"] = "attachment; filename=\"#{filename}\""
+      response.headers["Content-Disposition"] = "attachment; filename=\"#{export_filename}\""
+    end
+
+    def export_filename
+      "instruments_#{Time.zone.now.strftime('%Y%m%d_%H%M%S')}.#{params[:format]}"
     end
 end

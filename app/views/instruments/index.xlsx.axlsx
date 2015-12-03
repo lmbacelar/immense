@@ -1,0 +1,7 @@
+wb = xlsx_package.workbook
+wb.add_worksheet name: 'Instruments' do |sheet|
+  sheet.add_row Instrument::IMPORT_ATTRS
+  @instruments.each do |instrument|
+    sheet.add_row Instrument::IMPORT_ATTRS.map{ |attr| instrument.send attr }
+  end
+end

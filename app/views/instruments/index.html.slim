@@ -21,7 +21,7 @@ section.content
         | Download: 
         = link_to 'CSV', instruments_path(params.merge(format: :csv))
         |  | 
-        = link_to 'XLS', instruments_path(params.merge(format: :xls))
+        = link_to 'XLSX', instruments_path(params.merge(format: :xlsx))
       == render @paged_instruments
       = paginate @paged_instruments
 
