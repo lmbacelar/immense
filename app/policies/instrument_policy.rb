@@ -14,4 +14,8 @@ class InstrumentPolicy < ApplicationPolicy
   def destroy?
     admin? || (manager? && owner?)
   end
+
+  def import?
+    admin?
+  end
 end
