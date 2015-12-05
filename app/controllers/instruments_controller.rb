@@ -6,11 +6,9 @@ class InstrumentsController < ApplicationController
     @instruments = Instrument.search @query
     @paged_instruments = @instruments.page params[:page]
     authorize @paged_instruments
-
     respond_to do |format|
       format.html
       format.json
-      format.xlsx { set_filename_and_render }
       format.csv  { set_filename_and_render }
     end
   end
@@ -29,7 +27,6 @@ class InstrumentsController < ApplicationController
   def create
     @instrument = current_user.instruments.new instrument_params
     authorize @instrument
-
     respond_to do |format|
       if @instrument.save
         format.html { redirect_to @instrument, notice: 'Instrument was successfully created.' }
