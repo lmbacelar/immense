@@ -1,6 +1,6 @@
 CSV.generate do |csv|
-  csv << Instrument::IMPORT_ATTRS
+  csv << Instrument::EXPORT_ATTRS
   @instruments.each do |instrument|
-    csv << Instrument::IMPORT_ATTRS.map { |attr| instrument.send attr }
+    csv << Instrument::EXPORT_ATTRS.map { |attr| instrument.send attr }
   end
 end
