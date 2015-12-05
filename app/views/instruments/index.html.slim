@@ -12,13 +12,15 @@ section.content
       - if policy(Instrument).new?
         span Or
         = link_to 'Add New', new_instrument_path, class: :primary
-
+      - if policy(Instrument).import?
+        span Or
+        = link_to 'Import', '#', class: :primary
   section.search_results
     - if @paged_instruments.empty?
       p No instruments found.
     - else
       p
-        | Download: 
+        span Export:
         = link_to 'CSV', instruments_path(params.merge(format: :csv))
       == render @paged_instruments
       = paginate @paged_instruments
