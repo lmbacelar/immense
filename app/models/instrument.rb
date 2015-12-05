@@ -30,4 +30,12 @@ class Instrument < ActiveRecord::Base
   def user_email= email
     self.user = User.find_by email: email
   end
+
+  def self.import file
+    CSV.foreach file.path, headers: true do |row|
+      instrument = find_by_reference(row['reference']) || new
+      instrument.attributes = row.to_hash.slice(*Instrument::EXPORT_ATTRS)
+      instrument.save!
+    end
+  end
 end
