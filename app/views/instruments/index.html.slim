@@ -2,36 +2,9 @@ header.content_title
   h1 Instruments
 
 section.content
-  section.search_form
-    = form_tag instruments_path, method: :get do
-      div.search_field_button
-        = text_field_tag  :query, @query, autofocus: true, placeholder: 'Search for an Instrument ...'
-        span
-          = submit_tag 'Go!', name: nil
-    section.search_actions
-      - if policy(Instrument).new?
-        span Or
-        = link_to 'Add New', new_instrument_path, class: :primary
-      - if policy(Instrument).import?
-        span Or
-        = link_to 'Import', '#', class: :primary
-  section.search_results
-    - if @paged_instruments.empty?
-      p No instruments found.
-    - else
-      p
-        span Export:
-        = link_to 'CSV', instruments_path(params.merge(format: :csv))
-      == render @paged_instruments
-      = paginate @paged_instruments
+  == render partial: 'search_form'
+  == render partial: 'search_results', locals: { instruments: @paged_instruments }
+  == render partial: 'import_form'
 
 section.sidebar
-  h3 Lorem Ipsum
-  O Lorem Ipsum é um texto modelo da indústria tipográfica e de impressão. 
-  O Lorem Ipsum tem vindo a ser o texto padrão usado por estas indústrias desde o ano de 1500, 
-  quando uma misturou os caracteres de um texto para criar um espécime de livro. 
-  Este texto não só sobreviveu 5 séculos, mas também o salto para a tipografia electrónica, 
-  mantendo-se essencialmente inalterada. 
-  Foi popularizada nos anos 60 com a disponibilização das folhas de Letraset, 
-  que continham passagens com Lorem Ipsum, e mais recentemente com os programas de publicação 
-  como o Aldus PageMaker que incluem versões do Lorem Ipsum.
+  == render partial: 'sidebar'
