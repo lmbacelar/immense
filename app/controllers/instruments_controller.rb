@@ -58,6 +58,12 @@ class InstrumentsController < ApplicationController
     end
   end
 
+  def import
+    authorize Instrument
+    Instrument.import params[:file]
+    redirect_to instruments_url, notice: 'Instruments imported.'
+  end
+
   private
     def set_instrument
       @instrument = Instrument.friendly.find params[:id]
