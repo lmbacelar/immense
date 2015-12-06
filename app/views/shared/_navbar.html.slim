@@ -8,21 +8,8 @@
     = link_to 'ImMenSe', instruments_path, class: 'navbar-brand'
   #bs-example-navbar-collapse-1.collapse.navbar-collapse
     ul.nav.navbar-nav
-      li.active
-        a href='#' Link <span class='sr-only'> (current)</span>
+      li= link_to 'Instruments', instruments_path
       li: a href='#' Link
-      li.dropdown
-        a.dropdown-toggle href='#' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'
-          Dropdown
-          span.caret
-        ul.dropdown-menu
-          li: a href='#' Action
-          li: a href='#' Another action
-          li: a href='#' Something else here
-          li.divider role='separator'
-          li: a href='#' Separated link
-          li.divider role='separator'
-          li: a href='#' One more separated link
     ul.nav.navbar-nav.navbar-right
       - if user_signed_in?
         li= link_to current_user.email, edit_user_registration_path(current_user)
