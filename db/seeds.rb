@@ -1,3 +1,17 @@
+me = Department.create name: 'ME', designation: 'Maintenance & Engineering'
+ma = me.children.create name: 'MA', designation: 'Aircraft Maintenance'
+lg = ma.children.create name: 'LG', designation: 'Logistics'
+ef = lg.children.create name: 'EF', designation: 'Tool Shop'
+mc = me.children.create name: 'Components Maintenance'
+hp = mc.children.create name: 'HP', designation: 'Hydraulics and Pneumatics Shop'
+ie = mc.children.create name: 'IE', designation: 'Avionics Shop'
+qs = me.children.create name: 'QS', designation: 'Quality and Safety'
+lb = qs.children.create name: 'LB', designation: 'Laboratories'
+ca = lb.children.create name: 'CA', designation: 'Calibrations'
+nd = lb.children.create name: 'ND', designation: 'Non-Destructive Testing'
+fq = lb.children.create name: 'FQ', designation: 'Physical and Chemical Testing'
+
+
 users = [ { email: 'admin@test.com',    password: '00000000', password_confirmation: '00000000', role: 'admin'   },
           { email: 'manager1@test.com', password: '00000000', password_confirmation: '00000000', role: 'manager' },
           { email: 'manager2@test.com', password: '00000000', password_confirmation: '00000000', role: 'manager' },
