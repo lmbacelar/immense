@@ -30,6 +30,39 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: departments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE departments (
+    id integer NOT NULL,
+    name character varying DEFAULT ''::character varying NOT NULL,
+    designation character varying DEFAULT ''::character varying NOT NULL,
+    ancestry character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: departments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE departments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: departments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE departments_id_seq OWNED BY departments.id;
+
+
+--
 -- Name: friendly_id_slugs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -155,6 +188,13 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY departments ALTER COLUMN id SET DEFAULT nextval('departments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY friendly_id_slugs ALTER COLUMN id SET DEFAULT nextval('friendly_id_slugs_id_seq'::regclass);
 
 
@@ -170,6 +210,14 @@ ALTER TABLE ONLY instruments ALTER COLUMN id SET DEFAULT nextval('instruments_id
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: departments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY departments
+    ADD CONSTRAINT departments_pkey PRIMARY KEY (id);
 
 
 --
@@ -194,6 +242,20 @@ ALTER TABLE ONLY instruments
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_departments_on_ancestry; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_departments_on_ancestry ON departments USING btree (ancestry);
+
+
+--
+-- Name: index_departments_on_name_and_ancestry; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_departments_on_name_and_ancestry ON departments USING btree (name, ancestry);
 
 
 --
@@ -329,4 +391,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151125205939');
 INSERT INTO schema_migrations (version) VALUES ('20151128170132');
 
 INSERT INTO schema_migrations (version) VALUES ('20151128182408');
+
+INSERT INTO schema_migrations (version) VALUES ('20151206003958');
 
