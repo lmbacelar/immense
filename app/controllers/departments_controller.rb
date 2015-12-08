@@ -73,12 +73,4 @@ class DepartmentsController < ApplicationController
     def department_params
       params.require(:department).permit(:name, :full_name, :designation)
     end
-
-    def set_filename_and_render
-      response.headers["Content-Disposition"] = "attachment; filename=\"#{export_filename}\""
-    end
-
-    def export_filename
-      "departments_#{Time.zone.now.strftime('%Y%m%d_%H%M%S')}.#{params[:format]}"
-    end
 end

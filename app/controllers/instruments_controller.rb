@@ -73,12 +73,4 @@ class InstrumentsController < ApplicationController
     def instrument_params
       params.require(:instrument).permit(:reference, :designation, :manufacturer, :model, :part_number, :serial_number, :remarks)
     end
-
-    def set_filename_and_render
-      response.headers["Content-Disposition"] = "attachment; filename=\"#{export_filename}\""
-    end
-
-    def export_filename
-      "instruments_#{Time.zone.now.strftime('%Y%m%d_%H%M%S')}.#{params[:format]}"
-    end
 end
