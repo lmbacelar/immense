@@ -37,7 +37,8 @@ CREATE TABLE departments (
     id integer NOT NULL,
     name character varying DEFAULT ''::character varying NOT NULL,
     designation character varying DEFAULT ''::character varying NOT NULL,
-    ancestry character varying,
+    slug character varying NOT NULL,
+    parent_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -245,17 +246,17 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: index_departments_on_ancestry; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_departments_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_departments_on_ancestry ON departments USING btree (ancestry);
+CREATE UNIQUE INDEX index_departments_on_name ON departments USING btree (name);
 
 
 --
--- Name: index_departments_on_name_and_ancestry; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_departments_on_slug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_departments_on_name_and_ancestry ON departments USING btree (name, ancestry);
+CREATE UNIQUE INDEX index_departments_on_slug ON departments USING btree (slug);
 
 
 --
@@ -376,6 +377,14 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 ALTER TABLE ONLY instruments
     ADD CONSTRAINT fk_rails_607dc78dbe FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_8e1e5764fc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY departments
+    ADD CONSTRAINT fk_rails_8e1e5764fc FOREIGN KEY (parent_id) REFERENCES departments(id);
 
 
 --
