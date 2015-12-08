@@ -1,0 +1,17 @@
+section.import_form
+  - if policy(Department).import?
+    h2 Import Departments
+    section.instructions
+    = form_tag import_departments_path, multipart: true, class: :highlight do
+      fieldset
+        p A CSV file can be used to import records. The first row should be the column name. The following columns are allowed:
+        ul
+          - Department::EXPORT_ATTRS.each do |attr|
+            li= attr
+        p For existing <strong>name</strong> department will be updated.
+        p Departments can be nested using '<strong>/</strong>' character (example: DepA/DepB/DepC).
+        p Parent departments must exist (DepA, and DepA/DepB, in previous example).
+        p Select a compliant CSV file and Import! it.
+        = file_field_tag :file
+      section.actions
+        = submit_tag 'Import!', class: :primary

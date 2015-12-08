@@ -1,0 +1,9 @@
+- present department do |i|
+  section.summary
+    header.reference
+      h3= i.name
+    section.summary-details
+      h4= i.designation
+    section.summary-actions
+      = i.edit_link
+      = i.destroy_link
