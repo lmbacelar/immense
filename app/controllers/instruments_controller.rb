@@ -74,10 +74,6 @@ class InstrumentsController < ApplicationController
       params.require(:instrument).permit(:reference, :designation, :manufacturer, :model, :part_number, :serial_number, :remarks)
     end
 
-    def search_params
-      params.require(:search).permit(:query)
-    end
-
     def set_filename_and_render
       response.headers["Content-Disposition"] = "attachment; filename=\"#{export_filename}\""
     end
