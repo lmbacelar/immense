@@ -1,9 +1,0 @@
-section.search_results
-  - if instruments.empty?
-    p No instruments found.
-  - else
-    p
-      span Export:
-      = link_to 'CSV', instruments_path(params.merge(format: :csv))
-    == render instruments
-    = paginate instruments

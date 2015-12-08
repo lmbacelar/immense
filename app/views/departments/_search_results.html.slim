@@ -1,9 +1,0 @@
-section.search_results
-  - if departments.empty?
-    p No departments found.
-  - else
-    p
-      span Export:
-      = link_to 'CSV', departments_path(params.merge(format: :csv))
-    == render departments
-    = paginate departments
