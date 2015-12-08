@@ -6,7 +6,6 @@ module ApplicationHelper
     presenter
   end
 
-
   def paginate collection_or_options = nil, options = {}
     if collection_or_options.is_a? Hash
       options, collection_or_options = collection_or_options, nil
@@ -14,6 +13,26 @@ module ApplicationHelper
     unless options[:renderer]
       options = options.merge renderer: BootstrapPagination::Rails
     end
-    will_paginate *[collection_or_options, options].compact
+    will_paginate(*[collection_or_options, options].compact)
+  end
+
+  def resources_path options={}
+    Rails.application.routes.url_helpers.send("#{resources_name}_path", options)
+  end
+
+  def new_resource_path
+    Rails.application.routes.url_helpers.send("new_#{resource_name}_path")
+  end
+
+  def resources_name
+    params[:controller]
+  end
+
+  def resource_name
+    resources_name.singularize
+  end
+
+  def resource_class
+    resource_name.classify.constantize
   end
 end
