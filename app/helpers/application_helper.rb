@@ -35,4 +35,8 @@ module ApplicationHelper
   def resource_class
     resource_name.classify.constantize
   end
+
+  def action_name
+    params[:action].capitalize
+  end
 end

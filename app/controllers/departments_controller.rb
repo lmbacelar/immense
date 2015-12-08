@@ -19,9 +19,11 @@ class DepartmentsController < ApplicationController
   def new
     @department = Department.new
     authorize @department
+    render 'shared/new_or_edit'
   end
 
   def edit
+    render 'shared/new_or_edit'
   end
 
   def create

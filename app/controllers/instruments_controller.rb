@@ -19,9 +19,11 @@ class InstrumentsController < ApplicationController
   def new
     @instrument = current_user.instruments.new
     authorize @instrument
+    render 'shared/new_or_edit'
   end
 
   def edit
+    render 'shared/new_or_edit'
   end
 
   def create
