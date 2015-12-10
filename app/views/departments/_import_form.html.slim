@@ -6,7 +6,7 @@ section.import_form
       fieldset
         p A CSV file can be used to import records. The first row should be the column name. The following columns are allowed:
         ul
-          - Department::EXPORT_ATTRS.each do |attr|
+          - Department.io_attributes.each do |attr|
             li= attr
         p For existing <strong>name</strong>, Department will be updated.
         p Departments can be nested using '<strong>/</strong>' character (example: DepA/DepB/DepC).

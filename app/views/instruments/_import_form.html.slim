@@ -6,7 +6,7 @@ section.import_form
       fieldset
         p A CSV file can be used to import records. The first row should be the column name. The following columns are allowed:
         ul
-          - Instrument::EXPORT_ATTRS.each do |attr|
+          - Instrument.io_attributes.each do |attr|
             li= attr
         p For existing <strong>reference</strong>, Instrument will be updated.
         p For new Instruments, <strong>reference</strong>, <strong>designation</strong> and <strong>user_email</strong> cannot be empty.
