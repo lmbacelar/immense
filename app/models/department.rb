@@ -1,7 +1,6 @@
 class Department < ActiveRecord::Base
 
   SEPARATOR = '/'
-  EXPORT_ATTRS = %w{name designation}
 
   belongs_to :parent,   class_name: 'Department'
   has_many   :children, class_name: 'Department', foreign_key: :parent_id
@@ -11,6 +10,9 @@ class Department < ActiveRecord::Base
   before_save :set_parent
 
   default_scope { order 'name ASC' }
+
+  include Serializable
+  io_attributes :name,:designation
 
   extend FriendlyId
   friendly_id :name, use: :slugged
@@ -29,14 +31,6 @@ class Department < ActiveRecord::Base
 
   def parent_name
     name.split(SEPARATOR)[0..-2].join(SEPARATOR)
-  end
-
-  def self.import file
-    CSV.foreach file.path, headers: true do |row|
-      department = find_by_name(row['name']) || new
-      department.attributes = row.to_hash.slice(*Department::EXPORT_ATTRS)
-      department.save!
-    end
   end
 
   private

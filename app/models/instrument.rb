@@ -1,12 +1,13 @@
 class Instrument < ActiveRecord::Base
 
-  EXPORT_ATTRS = %w{reference designation manufacturer model part_number serial_number remarks user_email}
-  
+  belongs_to :user
+
   validates :reference,   presence: true, uniqueness: true
   validates :designation, presence: true
   validates :user,        presence: true
 
-  belongs_to :user
+  include Serializable
+  io_attributes :reference,:designation, :manufacturer, :model, :part_number, :serial_number, :remarks, :user_email
 
   extend FriendlyId
   friendly_id :reference, use: :slugged
@@ -29,13 +30,5 @@ class Instrument < ActiveRecord::Base
 
   def user_email= email
     self.user = User.find_by email: email
-  end
-
-  def self.import file
-    CSV.foreach file.path, headers: true do |row|
-      instrument = find_by_reference(row['reference']) || new
-      instrument.attributes = row.to_hash.slice(*Instrument::EXPORT_ATTRS)
-      instrument.save!
-    end
   end
 end
