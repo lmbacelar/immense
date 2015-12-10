@@ -9,7 +9,7 @@ class DepartmentsController < ApplicationController
     respond_to do |format|
       format.html
       format.json
-      format.csv  { set_filename_and_render }
+      format.csv  { send_data @departments.to_csv, filename: export_filename }
     end
   end
 
@@ -62,7 +62,7 @@ class DepartmentsController < ApplicationController
 
   def import
     authorize Department
-    Department.import params[:file]
+    Department.from_csv params[:file]
     redirect_to departments_url, notice: 'Departments imported.'
   end
 

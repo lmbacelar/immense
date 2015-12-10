@@ -9,7 +9,7 @@ class InstrumentsController < ApplicationController
     respond_to do |format|
       format.html
       format.json
-      format.csv  { set_filename_and_render }
+      format.csv  { send_data @instruments.to_csv, filename: export_filename }
     end
   end
 
@@ -62,7 +62,7 @@ class InstrumentsController < ApplicationController
 
   def import
     authorize Instrument
-    Instrument.import params[:file]
+    Instrument.from_csv params[:file]
     redirect_to instruments_url, notice: 'Instruments imported.'
   end
 
