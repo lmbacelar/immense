@@ -17,7 +17,7 @@ class InstrumentsController < ApplicationController
   end
 
   def new
-    @instrument = current_user.instruments.new
+    @instrument = Instrument.new
     authorize @instrument
     render 'shared/new_or_edit'
   end
@@ -27,14 +27,14 @@ class InstrumentsController < ApplicationController
   end
 
   def create
-    @instrument = current_user.instruments.new instrument_params
+    @instrument = Instrument.new instrument_params
     authorize @instrument
     respond_to do |format|
       if @instrument.save
         format.html { redirect_to @instrument, notice: 'Instrument was successfully created.' }
         format.json { render :show, status: :created, location: @instrument }
       else
-        format.html { render :new }
+        format.html { render 'shared/new_or_edit' }
         format.json { render json: @instrument.errors, status: :unprocessable_entity }
       end
     end
@@ -46,7 +46,7 @@ class InstrumentsController < ApplicationController
         format.html { redirect_to @instrument, notice: 'Instrument was successfully updated.' }
         format.json { render :show, status: :ok, location: @instrument }
       else
-        format.html { render :edit }
+        format.html { render 'shared/new_or_edit' }
         format.json { render json: @instrument.errors, status: :unprocessable_entity }
       end
     end
