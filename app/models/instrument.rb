@@ -1,13 +1,13 @@
 class Instrument < ActiveRecord::Base
 
-  belongs_to :user
+  belongs_to :department
 
   validates :reference,   presence: true, uniqueness: true
   validates :designation, presence: true
-  validates :user,        presence: true
+  validates :department,  presence: true
 
   include Serializable
-  io_attributes :reference,:designation, :manufacturer, :model, :part_number, :serial_number, :remarks, :user_email
+  io_attributes :reference,:designation, :manufacturer, :model, :part_number, :serial_number, :remarks, :department_name
 
   extend FriendlyId
   friendly_id :reference, use: :slugged
@@ -24,11 +24,11 @@ class Instrument < ActiveRecord::Base
     end
   end
 
-  def user_email
-    user.email
+  def department_name
+    department.name
   end
 
-  def user_email= email
-    self.user = User.find_by email: email
+  def department_name= name
+    self.department = Department.find_by_name name
   end
 end
