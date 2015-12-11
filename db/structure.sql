@@ -112,7 +112,7 @@ CREATE TABLE instruments (
     slug character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    user_id integer NOT NULL
+    department_id integer NOT NULL
 );
 
 
@@ -162,7 +162,8 @@ CREATE TABLE users (
     last_sign_in_ip inet,
     role character varying DEFAULT 'guest'::character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    department_id integer NOT NULL
 );
 
 
@@ -288,6 +289,13 @@ CREATE INDEX index_friendly_id_slugs_on_sluggable_type ON friendly_id_slugs USIN
 
 
 --
+-- Name: index_instruments_on_department_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_instruments_on_department_id ON instruments USING btree (department_id);
+
+
+--
 -- Name: index_instruments_on_reference; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -302,10 +310,10 @@ CREATE UNIQUE INDEX index_instruments_on_slug ON instruments USING btree (slug);
 
 
 --
--- Name: index_instruments_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_department_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_instruments_on_user_id ON instruments USING btree (user_id);
+CREATE INDEX index_users_on_department_id ON users USING btree (department_id);
 
 
 --
@@ -372,11 +380,11 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
--- Name: fk_rails_607dc78dbe; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_61af1c6408; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY instruments
-    ADD CONSTRAINT fk_rails_607dc78dbe FOREIGN KEY (user_id) REFERENCES users(id);
+    ADD CONSTRAINT fk_rails_61af1c6408 FOREIGN KEY (department_id) REFERENCES departments(id);
 
 
 --
@@ -388,10 +396,20 @@ ALTER TABLE ONLY departments
 
 
 --
+-- Name: fk_rails_f29bf9cdf2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT fk_rails_f29bf9cdf2 FOREIGN KEY (department_id) REFERENCES departments(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user",public;
+
+INSERT INTO schema_migrations (version) VALUES ('20151124003958');
 
 INSERT INTO schema_migrations (version) VALUES ('20151124112433');
 
@@ -400,6 +418,4 @@ INSERT INTO schema_migrations (version) VALUES ('20151125205939');
 INSERT INTO schema_migrations (version) VALUES ('20151128170132');
 
 INSERT INTO schema_migrations (version) VALUES ('20151128182408');
-
-INSERT INTO schema_migrations (version) VALUES ('20151206003958');
 
