@@ -34,7 +34,7 @@ class DepartmentsController < ApplicationController
         format.html { redirect_to @department, notice: 'Department was successfully created.' }
         format.json { render :show, status: :created, location: @department }
       else
-        format.html { render :new }
+        format.html { render 'shared/new_or_edit' }
         format.json { render json: @department.errors, status: :unprocessable_entity }
       end
     end
@@ -46,7 +46,7 @@ class DepartmentsController < ApplicationController
         format.html { redirect_to @department, notice: 'Department was successfully updated.' }
         format.json { render :show, status: :ok, location: @department }
       else
-        format.html { render :edit }
+        format.html { render 'shared/new_or_edit' }
         format.json { render json: @department.errors, status: :unprocessable_entity }
       end
     end
