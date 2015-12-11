@@ -33,11 +33,15 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string   :role, null: false, default: 'guest', index: true
 
       t.timestamps null: false
+
+      t.references :department, null: false, index: true
     end
 
     add_index :users, :email,                unique: true
     add_index :users, :reset_password_token, unique: true
     # add_index :users, :confirmation_token,   unique: true
     # add_index :users, :unlock_token,         unique: true
+
+    add_foreign_key :users, :departments
   end
 end
