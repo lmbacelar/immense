@@ -10,8 +10,10 @@ section.content
           = f.input :manufacturer
           = f.input :model
           = f.input :serial_number
-        section.secondary_details
           = f.input :part_number
+        section.primary_details
+          = f.input :department_name
+        section.secondary_details
           = f.input :remarks
 
       section.actions
