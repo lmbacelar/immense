@@ -15,6 +15,7 @@ class Instrument < ActiveRecord::Base
   include PgSearch
   pg_search_scope :full_text_search,
                      against: [ :reference, :designation, :manufacturer, :model, :serial_number ],
+                     associated_against: { department: [:name] },
                      using: { tsearch: { dictionary: 'english', prefix: true } }
   def self.search query
     if query.present?
@@ -29,6 +30,6 @@ class Instrument < ActiveRecord::Base
   end
 
   def department_name= name
-    self.department = Department.find_by_name name
+    self.department = Department.where(name: name).first_or_create if name
   end
 end
