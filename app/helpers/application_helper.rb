@@ -17,7 +17,7 @@ module ApplicationHelper
   end
 
   def resources_path options={}
-    Rails.application.routes.url_helpers.send("#{resources_name}_path", options)
+    Rails.application.routes.url_helpers.send("#{resources_name}_path", options.symbolize_keys)
   end
 
   def new_resource_path
