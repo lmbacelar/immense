@@ -30,6 +30,6 @@ class Instrument < ActiveRecord::Base
   end
 
   def department_name= name
-    self.department = Department.where(name: name).first_or_create if name
+    self.department = Department.where(name: name).first if name
   end
 end
