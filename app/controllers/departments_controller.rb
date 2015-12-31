@@ -66,6 +66,12 @@ class DepartmentsController < ApplicationController
     redirect_to departments_url, notice: 'Departments imported.'
   end
 
+  def autocomplete
+    departments = Department.where("name ilike '%#{params[:term]}%'").order(:name)
+    authorize departments
+    render json: departments.pluck(:name)
+  end
+
   private
     def set_department
       @department = Department.friendly.find params[:id]

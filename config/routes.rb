@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   resources :departments do
-    collection { post :import }
+    collection do
+      get  :autocomplete
+      post :import
+    end
   end
   resources :instruments do
     collection { post :import }
