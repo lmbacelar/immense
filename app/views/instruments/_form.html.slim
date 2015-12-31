@@ -12,7 +12,7 @@ section.content
           = f.input :serial_number
           = f.input :part_number
         section.primary_details
-          = f.input :department_name
+          = f.input :department_name, input_html: { data: { autocomplete_source: autocomplete_departments_path } }
         section.secondary_details
           = f.input :remarks
 
