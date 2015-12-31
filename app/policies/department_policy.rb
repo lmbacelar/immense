@@ -18,4 +18,9 @@ class DepartmentPolicy < ApplicationPolicy
   def import?
     admin?
   end
+
+  def autocomplete?
+    # TODO: limit to departments owned by user
+    true
+  end
 end
