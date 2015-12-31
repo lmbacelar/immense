@@ -26,7 +26,7 @@ class Instrument < ActiveRecord::Base
   end
 
   def department_name
-    department.name
+    department.try :name
   end
 
   def department_name= name
