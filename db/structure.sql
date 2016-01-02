@@ -104,7 +104,6 @@ CREATE TABLE instruments (
     id integer NOT NULL,
     reference character varying DEFAULT ''::character varying NOT NULL,
     designation character varying DEFAULT ''::character varying NOT NULL,
-    manufacturer character varying DEFAULT ''::character varying NOT NULL,
     model character varying DEFAULT ''::character varying NOT NULL,
     part_number character varying DEFAULT ''::character varying NOT NULL,
     serial_number character varying DEFAULT ''::character varying NOT NULL,
@@ -112,6 +111,7 @@ CREATE TABLE instruments (
     slug character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
+    manufacturer_id integer NOT NULL,
     department_id integer NOT NULL
 );
 
@@ -133,6 +133,37 @@ CREATE SEQUENCE instruments_id_seq
 --
 
 ALTER SEQUENCE instruments_id_seq OWNED BY instruments.id;
+
+
+--
+-- Name: manufacturers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE manufacturers (
+    id integer NOT NULL,
+    name character varying DEFAULT ''::character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: manufacturers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE manufacturers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: manufacturers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE manufacturers_id_seq OWNED BY manufacturers.id;
 
 
 --
@@ -211,6 +242,13 @@ ALTER TABLE ONLY instruments ALTER COLUMN id SET DEFAULT nextval('instruments_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY manufacturers ALTER COLUMN id SET DEFAULT nextval('manufacturers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
@@ -236,6 +274,14 @@ ALTER TABLE ONLY friendly_id_slugs
 
 ALTER TABLE ONLY instruments
     ADD CONSTRAINT instruments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: manufacturers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY manufacturers
+    ADD CONSTRAINT manufacturers_pkey PRIMARY KEY (id);
 
 
 --
@@ -296,6 +342,13 @@ CREATE INDEX index_instruments_on_department_id ON instruments USING btree (depa
 
 
 --
+-- Name: index_instruments_on_manufacturer_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_instruments_on_manufacturer_id ON instruments USING btree (manufacturer_id);
+
+
+--
 -- Name: index_instruments_on_reference; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -307,6 +360,13 @@ CREATE UNIQUE INDEX index_instruments_on_reference ON instruments USING btree (r
 --
 
 CREATE UNIQUE INDEX index_instruments_on_slug ON instruments USING btree (slug);
+
+
+--
+-- Name: index_manufacturers_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_manufacturers_on_name ON manufacturers USING btree (name);
 
 
 --
@@ -345,13 +405,6 @@ CREATE INDEX instruments_designation ON instruments USING gin (to_tsvector('engl
 
 
 --
--- Name: instruments_manufacturer; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX instruments_manufacturer ON instruments USING gin (to_tsvector('english'::regconfig, (manufacturer)::text));
-
-
---
 -- Name: instruments_model; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -377,6 +430,14 @@ CREATE INDEX instruments_serial_number ON instruments USING gin (to_tsvector('en
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
+-- Name: fk_rails_569007c02c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY instruments
+    ADD CONSTRAINT fk_rails_569007c02c FOREIGN KEY (manufacturer_id) REFERENCES manufacturers(id);
 
 
 --
@@ -412,6 +473,8 @@ SET search_path TO "$user",public;
 INSERT INTO schema_migrations (version) VALUES ('20151124003958');
 
 INSERT INTO schema_migrations (version) VALUES ('20151124112433');
+
+INSERT INTO schema_migrations (version) VALUES ('20151125000000');
 
 INSERT INTO schema_migrations (version) VALUES ('20151125205939');
 
