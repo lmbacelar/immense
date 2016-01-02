@@ -27,6 +27,7 @@ group :development do
   gem 'better_errors', '~> 2.1', '>= 2.1.1'
   gem 'binding_of_caller', '~> 0.7.2'
   gem 'spring'
+  gem 'awesome_print'
 end
 
 source 'https://rails-assets.org' do
