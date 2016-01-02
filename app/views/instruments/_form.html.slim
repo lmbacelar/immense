@@ -9,7 +9,8 @@ section.content
           = f.input :designation
           = f.input :manufacturer_name, label: 'Manufacturer',
                                         input_html: { data: { autocomplete_source: manufacturers_autocomplete_path } }
-          = f.input :model
+          = f.input :modl_name, label: 'Model',
+                                        input_html: { data: { autocomplete_source: models_autocomplete_path } }
           = f.input :serial_number
           = f.input :part_number
         section.primary_details
