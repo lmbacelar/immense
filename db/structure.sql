@@ -104,7 +104,6 @@ CREATE TABLE instruments (
     id integer NOT NULL,
     reference character varying DEFAULT ''::character varying NOT NULL,
     designation character varying DEFAULT ''::character varying NOT NULL,
-    model character varying DEFAULT ''::character varying NOT NULL,
     part_number character varying DEFAULT ''::character varying NOT NULL,
     serial_number character varying DEFAULT ''::character varying NOT NULL,
     remarks text DEFAULT ''::text NOT NULL,
@@ -112,6 +111,7 @@ CREATE TABLE instruments (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     manufacturer_id integer NOT NULL,
+    model_id integer NOT NULL,
     department_id integer NOT NULL
 );
 
@@ -164,6 +164,38 @@ CREATE SEQUENCE manufacturers_id_seq
 --
 
 ALTER SEQUENCE manufacturers_id_seq OWNED BY manufacturers.id;
+
+
+--
+-- Name: models; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE models (
+    id integer NOT NULL,
+    name character varying DEFAULT ''::character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    manufacturer_id integer NOT NULL
+);
+
+
+--
+-- Name: models_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE models_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: models_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE models_id_seq OWNED BY models.id;
 
 
 --
@@ -249,6 +281,13 @@ ALTER TABLE ONLY manufacturers ALTER COLUMN id SET DEFAULT nextval('manufacturer
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY models ALTER COLUMN id SET DEFAULT nextval('models_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
@@ -282,6 +321,14 @@ ALTER TABLE ONLY instruments
 
 ALTER TABLE ONLY manufacturers
     ADD CONSTRAINT manufacturers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: models_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY models
+    ADD CONSTRAINT models_pkey PRIMARY KEY (id);
 
 
 --
@@ -349,6 +396,13 @@ CREATE INDEX index_instruments_on_manufacturer_id ON instruments USING btree (ma
 
 
 --
+-- Name: index_instruments_on_model_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_instruments_on_model_id ON instruments USING btree (model_id);
+
+
+--
 -- Name: index_instruments_on_reference; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -367,6 +421,20 @@ CREATE UNIQUE INDEX index_instruments_on_slug ON instruments USING btree (slug);
 --
 
 CREATE UNIQUE INDEX index_manufacturers_on_name ON manufacturers USING btree (name);
+
+
+--
+-- Name: index_models_on_manufacturer_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_models_on_manufacturer_id ON models USING btree (manufacturer_id);
+
+
+--
+-- Name: index_models_on_name_and_manufacturer_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_models_on_name_and_manufacturer_id ON models USING btree (name, manufacturer_id);
 
 
 --
@@ -402,13 +470,6 @@ CREATE INDEX index_users_on_role ON users USING btree (role);
 --
 
 CREATE INDEX instruments_designation ON instruments USING gin (to_tsvector('english'::regconfig, (designation)::text));
-
-
---
--- Name: instruments_model; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX instruments_model ON instruments USING gin (to_tsvector('english'::regconfig, (model)::text));
 
 
 --
@@ -457,6 +518,22 @@ ALTER TABLE ONLY departments
 
 
 --
+-- Name: fk_rails_94d0af82d9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY instruments
+    ADD CONSTRAINT fk_rails_94d0af82d9 FOREIGN KEY (model_id) REFERENCES models(id);
+
+
+--
+-- Name: fk_rails_ed7c54c36f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY models
+    ADD CONSTRAINT fk_rails_ed7c54c36f FOREIGN KEY (manufacturer_id) REFERENCES manufacturers(id);
+
+
+--
 -- Name: fk_rails_f29bf9cdf2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -475,6 +552,8 @@ INSERT INTO schema_migrations (version) VALUES ('20151124003958');
 INSERT INTO schema_migrations (version) VALUES ('20151124112433');
 
 INSERT INTO schema_migrations (version) VALUES ('20151125000000');
+
+INSERT INTO schema_migrations (version) VALUES ('20151125000001');
 
 INSERT INTO schema_migrations (version) VALUES ('20151125205939');
 
