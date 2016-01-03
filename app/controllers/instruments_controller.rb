@@ -74,6 +74,6 @@ class InstrumentsController < ApplicationController
 
     def instrument_params
       params.require(:instrument).permit(:reference, :designation, :part_number, :serial_number, :remarks,
-                                         :brand_name, :modl_name, :department_name)
+                                         :brand, :model, :department)
     end
 end
