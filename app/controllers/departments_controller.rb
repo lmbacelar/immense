@@ -67,7 +67,7 @@ class DepartmentsController < ApplicationController
   end
 
   def autocomplete
-    departments = Department.where("name ilike '%#{params[:term]}%'").order(:name)
+    departments = current_user.departments.where("name ilike '%#{params[:term]}%'").order(:name)
     authorize departments
     render json: departments.pluck(:name)
   end
