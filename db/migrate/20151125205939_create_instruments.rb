@@ -9,14 +9,12 @@ class CreateInstruments < ActiveRecord::Migration
       t.string  :slug,          null: false
       t.timestamps              null: false
 
-      t.references :manufacturer, null: false, index: true
       t.references :model,        null: false, index: true
       t.references :department,   null: false, index: true
 
       t.index :reference, unique: true
       t.index :slug     , unique: true
     end
-    add_foreign_key :instruments, :manufacturers
     add_foreign_key :instruments, :models
     add_foreign_key :instruments, :departments
   end
