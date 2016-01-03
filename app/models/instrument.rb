@@ -39,6 +39,15 @@ class Instrument < ActiveRecord::Base
     @department ||= department_object&.name
   end
 
+  def validate_ownership user
+    if department.include? user.department
+      true
+    else
+      errors.add :department, 'must be owned by you'
+      false
+    end
+  end
+
   private
     def set_model_object
       brand_object = Brand.where(name: brand || '').first_or_create
