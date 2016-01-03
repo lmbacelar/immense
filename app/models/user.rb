@@ -10,4 +10,8 @@ class User < ActiveRecord::Base
   def department= name
     self.department_object = Department.find_by_name name
   end
+
+  def departments
+    Department.where "name ilike '#{department}%'"
+  end
 end
