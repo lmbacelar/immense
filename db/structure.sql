@@ -110,7 +110,6 @@ CREATE TABLE instruments (
     slug character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    manufacturer_id integer NOT NULL,
     model_id integer NOT NULL,
     department_id integer NOT NULL
 );
@@ -196,6 +195,39 @@ CREATE SEQUENCE models_id_seq
 --
 
 ALTER SEQUENCE models_id_seq OWNED BY models.id;
+
+
+--
+-- Name: pg_search_documents; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE pg_search_documents (
+    id integer NOT NULL,
+    content text,
+    searchable_id integer,
+    searchable_type character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: pg_search_documents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE pg_search_documents_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pg_search_documents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE pg_search_documents_id_seq OWNED BY pg_search_documents.id;
 
 
 --
@@ -288,6 +320,13 @@ ALTER TABLE ONLY models ALTER COLUMN id SET DEFAULT nextval('models_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY pg_search_documents ALTER COLUMN id SET DEFAULT nextval('pg_search_documents_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
@@ -329,6 +368,14 @@ ALTER TABLE ONLY manufacturers
 
 ALTER TABLE ONLY models
     ADD CONSTRAINT models_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pg_search_documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY pg_search_documents
+    ADD CONSTRAINT pg_search_documents_pkey PRIMARY KEY (id);
 
 
 --
@@ -389,13 +436,6 @@ CREATE INDEX index_instruments_on_department_id ON instruments USING btree (depa
 
 
 --
--- Name: index_instruments_on_manufacturer_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_instruments_on_manufacturer_id ON instruments USING btree (manufacturer_id);
-
-
---
 -- Name: index_instruments_on_model_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -435,6 +475,13 @@ CREATE INDEX index_models_on_manufacturer_id ON models USING btree (manufacturer
 --
 
 CREATE UNIQUE INDEX index_models_on_name_and_manufacturer_id ON models USING btree (name, manufacturer_id);
+
+
+--
+-- Name: index_pg_search_documents_on_searchable_type_and_searchable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_pg_search_documents_on_searchable_type_and_searchable_id ON pg_search_documents USING btree (searchable_type, searchable_id);
 
 
 --
@@ -491,14 +538,6 @@ CREATE INDEX instruments_serial_number ON instruments USING gin (to_tsvector('en
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
-
-
---
--- Name: fk_rails_569007c02c; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY instruments
-    ADD CONSTRAINT fk_rails_569007c02c FOREIGN KEY (manufacturer_id) REFERENCES manufacturers(id);
 
 
 --
@@ -560,4 +599,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151125205939');
 INSERT INTO schema_migrations (version) VALUES ('20151128170132');
 
 INSERT INTO schema_migrations (version) VALUES ('20151128182408');
+
+INSERT INTO schema_migrations (version) VALUES ('20160102230204');
 
