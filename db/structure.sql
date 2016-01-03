@@ -30,6 +30,37 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: brands; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE brands (
+    id integer NOT NULL,
+    name character varying DEFAULT ''::character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: brands_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE brands_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: brands_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE brands_id_seq OWNED BY brands.id;
+
+
+--
 -- Name: departments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -135,37 +166,6 @@ ALTER SEQUENCE instruments_id_seq OWNED BY instruments.id;
 
 
 --
--- Name: manufacturers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE manufacturers (
-    id integer NOT NULL,
-    name character varying DEFAULT ''::character varying NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: manufacturers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE manufacturers_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: manufacturers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE manufacturers_id_seq OWNED BY manufacturers.id;
-
-
---
 -- Name: models; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -174,7 +174,7 @@ CREATE TABLE models (
     name character varying DEFAULT ''::character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    manufacturer_id integer NOT NULL
+    brand_id integer NOT NULL
 );
 
 
@@ -285,6 +285,13 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY brands ALTER COLUMN id SET DEFAULT nextval('brands_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY departments ALTER COLUMN id SET DEFAULT nextval('departments_id_seq'::regclass);
 
 
@@ -306,13 +313,6 @@ ALTER TABLE ONLY instruments ALTER COLUMN id SET DEFAULT nextval('instruments_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY manufacturers ALTER COLUMN id SET DEFAULT nextval('manufacturers_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY models ALTER COLUMN id SET DEFAULT nextval('models_id_seq'::regclass);
 
 
@@ -328,6 +328,14 @@ ALTER TABLE ONLY pg_search_documents ALTER COLUMN id SET DEFAULT nextval('pg_sea
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: brands_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY brands
+    ADD CONSTRAINT brands_pkey PRIMARY KEY (id);
 
 
 --
@@ -355,14 +363,6 @@ ALTER TABLE ONLY instruments
 
 
 --
--- Name: manufacturers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY manufacturers
-    ADD CONSTRAINT manufacturers_pkey PRIMARY KEY (id);
-
-
---
 -- Name: models_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -384,6 +384,13 @@ ALTER TABLE ONLY pg_search_documents
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_brands_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_brands_on_name ON brands USING btree (name);
 
 
 --
@@ -457,24 +464,17 @@ CREATE UNIQUE INDEX index_instruments_on_slug ON instruments USING btree (slug);
 
 
 --
--- Name: index_manufacturers_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_models_on_brand_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_manufacturers_on_name ON manufacturers USING btree (name);
-
-
---
--- Name: index_models_on_manufacturer_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_models_on_manufacturer_id ON models USING btree (manufacturer_id);
+CREATE INDEX index_models_on_brand_id ON models USING btree (brand_id);
 
 
 --
--- Name: index_models_on_name_and_manufacturer_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_models_on_name_and_brand_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_models_on_name_and_manufacturer_id ON models USING btree (name, manufacturer_id);
+CREATE UNIQUE INDEX index_models_on_name_and_brand_id ON models USING btree (name, brand_id);
 
 
 --
@@ -565,11 +565,11 @@ ALTER TABLE ONLY instruments
 
 
 --
--- Name: fk_rails_ed7c54c36f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_ec6eb36a24; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY models
-    ADD CONSTRAINT fk_rails_ed7c54c36f FOREIGN KEY (manufacturer_id) REFERENCES manufacturers(id);
+    ADD CONSTRAINT fk_rails_ec6eb36a24 FOREIGN KEY (brand_id) REFERENCES brands(id);
 
 
 --
