@@ -1,7 +1,7 @@
 class Model < ActiveRecord::Base
-  belongs_to :brand
+  belongs_to :brand_object, class_name: 'Brand', foreign_key: :brand_id
 
-  def brand_name
-    brand&.name
+  def brand
+    brand_object&.name
   end
 end
