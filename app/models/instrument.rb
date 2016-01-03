@@ -41,8 +41,8 @@ class Instrument < ActiveRecord::Base
 
   private
     def set_model_object
-      brand = Brand.where(name: brand || '').first_or_create
-      self.model_object = brand.models.where(name: model || '').first_or_create
+      brand_object = Brand.where(name: brand || '').first_or_create
+      self.model_object = brand_object.models.where(name: model || '').first_or_create
     end
 
     def set_department_object
