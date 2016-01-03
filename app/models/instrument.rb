@@ -1,25 +1,22 @@
 class Instrument < ActiveRecord::Base
-  belongs_to :department
-  belongs_to :model
+  belongs_to :department_object, class_name: 'Department', foreign_key: :department_id, required: true
+  belongs_to :model_object,      class_name: 'Model',      foreign_key: :model_id,      required: true
 
-  before_validation :set_model, :set_department
+  before_validation :set_model_object, :set_department_object
 
   validates_uniqueness_of :reference
-  validates_presence_of   :reference, :designation,
-                          :brand_name,
-                          :model, :modl_name,
-                          :department, :department_name
+  validates_presence_of   :reference, :designation, :department
 
-  attr_writer :brand_name, :modl_name, :department_name
+  attr_writer :brand, :model, :department
 
   include Serializable
-  io_attributes :reference,:designation, :brand_name, :modl_name, :part_number, :serial_number, :remarks, :department_name
+  io_attributes :reference,:designation, :brand, :model, :part_number, :serial_number, :remarks, :department
 
   extend FriendlyId
   friendly_id :reference, use: :slugged
 
   include PgSearch
-  multisearchable against: [ :reference, :designation, :brand_name, :modl_name, :serial_number, :department_name ]
+  multisearchable against: [ :reference, :designation, :brand, :model, :serial_number, :department]
 
   def self.search query
     if query.present?
@@ -30,25 +27,25 @@ class Instrument < ActiveRecord::Base
     end
   end
 
-  def brand_name
-    @brand_name ||= model&.brand_name
+  def brand
+    @brand ||= model_object&.brand
   end
 
-  def modl_name
-    @modl_name ||= model&.name
+  def model
+    @model ||= model_object&.name
   end
 
-  def department_name
-    @department_name ||= department&.name
+  def department
+    @department ||= department_object&.name
   end
 
   private
-    def set_model
-      brand = Brand.where(name: brand_name || '').first_or_create
-      self.model = brand.models.where(name: modl_name || '').first_or_create
+    def set_model_object
+      brand = Brand.where(name: brand || '').first_or_create
+      self.model_object = brand.models.where(name: model || '').first_or_create
     end
 
-    def set_department
-      self.department = Department.where(name: department_name).first if department_name
+    def set_department_object
+      self.department_object = Department.where(name: department).first if department
     end
 end
