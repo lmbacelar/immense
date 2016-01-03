@@ -20,7 +20,6 @@ class DepartmentPolicy < ApplicationPolicy
   end
 
   def autocomplete?
-    # TODO: limit to departments owned by user
     true
   end
 end
