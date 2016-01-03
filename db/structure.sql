@@ -513,27 +513,6 @@ CREATE INDEX index_users_on_role ON users USING btree (role);
 
 
 --
--- Name: instruments_designation; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX instruments_designation ON instruments USING gin (to_tsvector('english'::regconfig, (designation)::text));
-
-
---
--- Name: instruments_reference; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX instruments_reference ON instruments USING gin (to_tsvector('english'::regconfig, (reference)::text));
-
-
---
--- Name: instruments_serial_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX instruments_serial_number ON instruments USING gin (to_tsvector('english'::regconfig, (serial_number)::text));
-
-
---
 -- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -595,8 +574,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151125000000');
 INSERT INTO schema_migrations (version) VALUES ('20151125000001');
 
 INSERT INTO schema_migrations (version) VALUES ('20151125205939');
-
-INSERT INTO schema_migrations (version) VALUES ('20151128170132');
 
 INSERT INTO schema_migrations (version) VALUES ('20151128182408');
 
