@@ -53,7 +53,7 @@ class ApplicationPolicy
 
   private
     def owned_by? a_user
-      record.department_name.include? a_user.department_name
+      record.department.include? a_user.department
     end
 
     def owner?
