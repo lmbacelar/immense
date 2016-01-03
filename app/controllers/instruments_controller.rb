@@ -30,7 +30,7 @@ class InstrumentsController < ApplicationController
     @instrument = Instrument.new instrument_params
     authorize @instrument
     respond_to do |format|
-      if @instrument.save
+      if @instrument.validate_ownership(current_user) && @instrument.save
         format.html { redirect_to @instrument, notice: 'Instrument was successfully created.' }
         format.json { render :show, status: :created, location: @instrument }
       else
@@ -42,7 +42,8 @@ class InstrumentsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @instrument.update(instrument_params)
+      @instrument.assign_attributes instrument_params
+      if @instrument.validate_ownership(current_user) && @instrument.save
         format.html { redirect_to @instrument, notice: 'Instrument was successfully updated.' }
         format.json { render :show, status: :ok, location: @instrument }
       else
