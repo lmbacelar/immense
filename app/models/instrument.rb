@@ -1,19 +1,12 @@
 class Instrument < ActiveRecord::Base
-
-  # NOTE:
-  # Manufacturer relation is redundant since model already defines its manufaturer.
-  # It is included in the database to optimize searches using pg_search_scope.
-  # Alternative: use multisearch and index methods :modl_name, manufacturer_name, ...
-
   belongs_to :department
-  belongs_to :manufacturer
   belongs_to :model
 
   before_validation :set_model, :set_department
 
   validates_uniqueness_of :reference
   validates_presence_of   :reference, :designation,
-                          :manufacturer, :manufacturer_name,
+                          :manufacturer_name,
                           :model, :modl_name,
                           :department, :department_name
 
@@ -26,15 +19,12 @@ class Instrument < ActiveRecord::Base
   friendly_id :reference, use: :slugged
 
   include PgSearch
-  pg_search_scope :full_text_search,
-                     against: [ :reference, :designation, :serial_number ],
-                     associated_against: { manufacturer: [:name],
-                                           model:        [:name],
-                                           department:   [:name] },
-                     using: { tsearch: { dictionary: 'english', prefix: true } }
+  multisearchable against: [ :reference, :designation, :manufacturer_name, :modl_name, :serial_number, :department_name ]
+
   def self.search query
     if query.present?
-      full_text_search query
+      found_ids = PgSearch.multisearch(query).where(searchable_type: self.name).map(&:searchable_id)
+      where id: found_ids
     else
       order 'created_at DESC'
     end
@@ -53,13 +43,9 @@ class Instrument < ActiveRecord::Base
   end
 
   private
-    def set_manufacturer
-      self.manufacturer = Manufacturer.where(name: manufacturer_name || '').first_or_create
-    end
-
     def set_model
-      set_manufacturer
-      self.model = self.manufacturer.models.where(name: modl_name || '').first_or_create
+      manufacturer = Manufacturer.where(name: manufacturer_name || '').first_or_create
+      self.model = manufacturer.models.where(name: modl_name || '').first_or_create
     end
 
     def set_department
