@@ -7,15 +7,12 @@ section.content
         section.primary_details
           = f.input :reference
           = f.input :designation
-          = f.input :manufacturer_name, label: 'Manufacturer',
-                                        input_html: { data: { autocomplete_source: manufacturers_autocomplete_path } }
-          = f.input :modl_name, label: 'Model',
-                                        input_html: { data: { autocomplete_source: models_autocomplete_path } }
+          = f.input :manufacturer_name, label: 'Manufacturer'
+          = f.input :modl_name, label: 'Model'
           = f.input :serial_number
           = f.input :part_number
         section.primary_details
-          = f.input :department_name, label: 'Department',
-                                      input_html: { data: { autocomplete_source: departments_autocomplete_path } }
+          = f.input :department_name, label: 'Department'
         section.secondary_details
           = f.input :remarks
 
