@@ -4,7 +4,7 @@ class InstrumentPresenter < BasePresenter
 
   def details
     text  = ''
-    text << "<strong>man.</strong> #{instrument.brand_name} "     if instrument.brand_name.present?
+    text << "<strong>bra.</strong> #{instrument.brand_name} "     if instrument.brand_name.present?
     text << "<strong>mod.</strong> #{instrument.modl_name}  "     if instrument.modl_name.present?
     text << "<strong>s/n</strong> #{instrument.serial_number}  "  if instrument.serial_number.present?
     text << "<strong>p/n</strong> #{instrument.part_number}  "    if instrument.part_number.present?
