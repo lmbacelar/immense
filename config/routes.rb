@@ -6,8 +6,8 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'manufacturers/autocomplete', to: 'manufacturers#autocomplete'
-  get 'models/autocomplete',        to: 'models#autocomplete'
+  get 'brands/autocomplete', to: 'brands#autocomplete'
+  get 'models/autocomplete', to: 'models#autocomplete'
   resources :instruments do
     collection { post :import }
   end

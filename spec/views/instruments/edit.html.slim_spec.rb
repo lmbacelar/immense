@@ -5,7 +5,7 @@ RSpec.describe "instruments/edit", type: :view do
     @instrument = assign(:instrument, Instrument.create!(
       :reference => "MyString",
       :designation => "MyString",
-      :manufacturer => "MyString",
+      :brand => "MyString",
       :model => "MyString",
       :part_number => "MyString",
       :serial_number => "MyString",
@@ -22,7 +22,7 @@ RSpec.describe "instruments/edit", type: :view do
 
       assert_select "input#instrument_designation[name=?]", "instrument[designation]"
 
-      assert_select "input#instrument_manufacturer[name=?]", "instrument[manufacturer]"
+      assert_select "input#instrument_brand[name=?]", "instrument[brand]"
 
       assert_select "input#instrument_model[name=?]", "instrument[model]"
 

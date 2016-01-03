@@ -6,7 +6,7 @@ RSpec.describe "instruments/index", type: :view do
       Instrument.create!(
         :reference => "Reference",
         :designation => "Designation",
-        :manufacturer => "Manufacturer",
+        :brand => "Brand",
         :model => "Model",
         :part_number => "Part Number",
         :serial_number => "Serial Number",
@@ -15,7 +15,7 @@ RSpec.describe "instruments/index", type: :view do
       Instrument.create!(
         :reference => "Reference",
         :designation => "Designation",
-        :manufacturer => "Manufacturer",
+        :brand => "Brand",
         :model => "Model",
         :part_number => "Part Number",
         :serial_number => "Serial Number",
@@ -28,7 +28,7 @@ RSpec.describe "instruments/index", type: :view do
     render
     assert_select "tr>td", :text => "Reference".to_s, :count => 2
     assert_select "tr>td", :text => "Designation".to_s, :count => 2
-    assert_select "tr>td", :text => "Manufacturer".to_s, :count => 2
+    assert_select "tr>td", :text => "Brand".to_s, :count => 2
     assert_select "tr>td", :text => "Model".to_s, :count => 2
     assert_select "tr>td", :text => "Part Number".to_s, :count => 2
     assert_select "tr>td", :text => "Serial Number".to_s, :count => 2

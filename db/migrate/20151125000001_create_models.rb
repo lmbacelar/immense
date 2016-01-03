@@ -5,10 +5,10 @@ class CreateModels < ActiveRecord::Migration
 
       t.timestamps null: false
 
-      t.references :manufacturer, null: false, index: true
+      t.references :brand, null: false, index: true
 
-      t.index [:name, :manufacturer_id], unique: true
+      t.index [:name, :brand_id], unique: true
     end
-    add_foreign_key :models, :manufacturers
+    add_foreign_key :models, :brands
   end
 end

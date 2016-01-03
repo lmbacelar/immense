@@ -6,20 +6,20 @@ class Instrument < ActiveRecord::Base
 
   validates_uniqueness_of :reference
   validates_presence_of   :reference, :designation,
-                          :manufacturer_name,
+                          :brand_name,
                           :model, :modl_name,
                           :department, :department_name
 
-  attr_writer :manufacturer_name, :modl_name, :department_name
+  attr_writer :brand_name, :modl_name, :department_name
 
   include Serializable
-  io_attributes :reference,:designation, :manufacturer_name, :modl_name, :part_number, :serial_number, :remarks, :department_name
+  io_attributes :reference,:designation, :brand_name, :modl_name, :part_number, :serial_number, :remarks, :department_name
 
   extend FriendlyId
   friendly_id :reference, use: :slugged
 
   include PgSearch
-  multisearchable against: [ :reference, :designation, :manufacturer_name, :modl_name, :serial_number, :department_name ]
+  multisearchable against: [ :reference, :designation, :brand_name, :modl_name, :serial_number, :department_name ]
 
   def self.search query
     if query.present?
@@ -30,8 +30,8 @@ class Instrument < ActiveRecord::Base
     end
   end
 
-  def manufacturer_name
-    @manufacturer_name ||= model&.manufacturer_name
+  def brand_name
+    @brand_name ||= model&.brand_name
   end
 
   def modl_name
@@ -44,8 +44,8 @@ class Instrument < ActiveRecord::Base
 
   private
     def set_model
-      manufacturer = Manufacturer.where(name: manufacturer_name || '').first_or_create
-      self.model = manufacturer.models.where(name: modl_name || '').first_or_create
+      brand = Brand.where(name: brand_name || '').first_or_create
+      self.model = brand.models.where(name: modl_name || '').first_or_create
     end
 
     def set_department

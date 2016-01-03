@@ -5,7 +5,7 @@ RSpec.describe "instruments/show", type: :view do
     @instrument = assign(:instrument, Instrument.create!(
       :reference => "Reference",
       :designation => "Designation",
-      :manufacturer => "Manufacturer",
+      :brand => "Brand",
       :model => "Model",
       :part_number => "Part Number",
       :serial_number => "Serial Number",
@@ -17,7 +17,7 @@ RSpec.describe "instruments/show", type: :view do
     render
     expect(rendered).to match(/Reference/)
     expect(rendered).to match(/Designation/)
-    expect(rendered).to match(/Manufacturer/)
+    expect(rendered).to match(/Brand/)
     expect(rendered).to match(/Model/)
     expect(rendered).to match(/Part Number/)
     expect(rendered).to match(/Serial Number/)

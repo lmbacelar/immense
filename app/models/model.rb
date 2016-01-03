@@ -1,7 +1,7 @@
 class Model < ActiveRecord::Base
-  belongs_to :manufacturer
+  belongs_to :brand
 
-  def manufacturer_name
-    manufacturer&.name
+  def brand_name
+    brand&.name
   end
 end
