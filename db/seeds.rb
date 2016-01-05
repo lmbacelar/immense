@@ -1,3 +1,7 @@
+[ { short_name: 'TAP',    name: 'Transportes Aéreos Portugueses, S.A.',    vat_prefix: 'PT', vat_number: '500278725'  },
+  { short_name: 'TAP_BR', name: 'TAP - Manutenção e Engenharia Brasil',    vat_prefix: 'BR', vat_number: '04.755.827' },
+  { short_name: 'IPAC',   name: 'Instituto Português de Acreditação I.P.', vat_prefix: 'PT', vat_number: '507031059'  }
+].each { |c| Company.create c }
 [ { name: 'ME',          designation: 'Maintenance & Engineering' },
   { name: 'ME/MA',       designation: 'Aircraft Maintenance' },
   { name: 'ME/MA/LG',    designation: 'Logistics' },
