@@ -61,6 +61,41 @@ ALTER SEQUENCE brands_id_seq OWNED BY brands.id;
 
 
 --
+-- Name: companies; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE companies (
+    id integer NOT NULL,
+    short_name character varying DEFAULT ''::character varying NOT NULL,
+    name character varying DEFAULT ''::character varying NOT NULL,
+    vat_number character varying DEFAULT ''::character varying NOT NULL,
+    vat_prefix character varying DEFAULT ''::character varying NOT NULL,
+    slug character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: companies_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE companies_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: companies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE companies_id_seq OWNED BY companies.id;
+
+
+--
 -- Name: departments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -292,6 +327,13 @@ ALTER TABLE ONLY brands ALTER COLUMN id SET DEFAULT nextval('brands_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY companies ALTER COLUMN id SET DEFAULT nextval('companies_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY departments ALTER COLUMN id SET DEFAULT nextval('departments_id_seq'::regclass);
 
 
@@ -336,6 +378,14 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 ALTER TABLE ONLY brands
     ADD CONSTRAINT brands_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: companies_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY companies
+    ADD CONSTRAINT companies_pkey PRIMARY KEY (id);
 
 
 --
@@ -391,6 +441,41 @@ ALTER TABLE ONLY users
 --
 
 CREATE UNIQUE INDEX index_brands_on_name ON brands USING btree (name);
+
+
+--
+-- Name: index_companies_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_companies_on_name ON companies USING btree (name);
+
+
+--
+-- Name: index_companies_on_short_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_companies_on_short_name ON companies USING btree (short_name);
+
+
+--
+-- Name: index_companies_on_slug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_companies_on_slug ON companies USING btree (slug);
+
+
+--
+-- Name: index_companies_on_vat_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_companies_on_vat_number ON companies USING btree (vat_number);
+
+
+--
+-- Name: index_companies_on_vat_prefix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_companies_on_vat_prefix ON companies USING btree (vat_prefix);
 
 
 --
@@ -564,6 +649,8 @@ ALTER TABLE ONLY users
 --
 
 SET search_path TO "$user",public;
+
+INSERT INTO schema_migrations (version) VALUES ('201511240000');
 
 INSERT INTO schema_migrations (version) VALUES ('20151124003958');
 
