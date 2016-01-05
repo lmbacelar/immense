@@ -60,8 +60,8 @@ class ApplicationPolicy
       owned_by? @user
     end
 
-    def admin?;   user.role == 'admin'   end
-    def manager?; user.role == 'manager' end
-    def auditor?; user.role == 'auditor' end
-    def guest?;   user.role == 'guest'   end
+    def admin?;   user&.role == 'admin'   end
+    def manager?; user&.role == 'manager' end
+    def auditor?; user&.role == 'auditor' end
+    def guest?;   user&.role == 'guest'   end
 end
