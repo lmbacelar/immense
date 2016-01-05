@@ -1,0 +1,19 @@
+header.content_title
+  h1= @company.short_name
+
+section.content
+  section.details
+    h3= @company.name
+    section.primary_details
+      dl
+        dt VAT
+        dd= "#{@company.vat_prefix} #{@company.vat_number}"
+
+  section.actions
+    -if policy(@company).edit?
+      = link_to 'Edit', edit_company_path(@company), class: :primary
+    - if policy(@company).destroy?
+      = link_to 'Destroy', @company, method: :delete,
+                                     data: { confirm: 'Are you sure?' },
+                                     class: :danger
+    = link_to 'Back to company list', companies_path, class: :default

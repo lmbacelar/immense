@@ -1,0 +1,9 @@
+- present company do |c|
+  section.summary
+    header.reference
+      h3= c.name
+    section.summary-details
+      p= c.details
+    section.summary-actions
+      = c.edit_link
+      = c.destroy_link
