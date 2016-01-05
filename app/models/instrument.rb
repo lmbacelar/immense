@@ -16,7 +16,7 @@ class Instrument < ActiveRecord::Base
   friendly_id :reference, use: :slugged
 
   include PgSearch
-  multisearchable against: [ :reference, :designation, :brand, :model, :serial_number, :department]
+  multisearchable against: [:reference, :designation, :brand, :model, :serial_number, :department]
 
   def self.search query
     if query.present?
