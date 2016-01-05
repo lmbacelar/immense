@@ -8,7 +8,7 @@ section.import_form
         ul
           - Department.io_attributes.each do |attr|
             li= attr
-        p For existing <strong>name</strong>, Department will be updated.
+        p For existing <strong>#{Department.io_attributes.first}</strong>, Department will be updated.
         p Departments can be nested using '<strong>/</strong>' character (example: DepA/DepB/DepC).
         p Parent departments must exist (DepA, and DepA/DepB, in previous example).
         p Select a compliant CSV file and Import! it.
