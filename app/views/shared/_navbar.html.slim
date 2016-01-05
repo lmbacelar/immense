@@ -8,8 +8,9 @@
     = link_to 'ImMenSe', instruments_path, class: 'navbar-brand'
   #bs-example-navbar-collapse-1.collapse.navbar-collapse
     ul.nav.navbar-nav
-      li= link_to 'Instruments', instruments_path
-      li= link_to 'Departments', departments_path
+      li= link_to 'Instruments', instruments_path if policy(Instrument).index?
+      li= link_to 'Companies',   companies_path   if policy(Company).index?
+      li= link_to 'Departments', departments_path if policy(Department).index?
     ul.nav.navbar-nav.navbar-right
       - if user_signed_in?
         li= link_to current_user.email, edit_user_registration_path(current_user)
