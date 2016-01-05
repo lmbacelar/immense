@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  resources :companies do
+    collection do
+      post :import
+    end
+  end
+
   get 'departments/autocomplete',   to: 'departments#autocomplete'
   resources :departments do
     collection do
