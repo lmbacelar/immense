@@ -2,7 +2,7 @@ class Department < ActiveRecord::Base
 
   SEPARATOR = '/'
 
-  belongs_to :company
+  belongs_to :company_object, class_name: 'Company', foreign_key: :company_id
   belongs_to :parent,   class_name: 'Department'
   has_many   :children, class_name: 'Department', foreign_key: :parent_id
   has_many   :instruments
@@ -35,8 +35,12 @@ class Department < ActiveRecord::Base
     name.split(SEPARATOR)[0..-2].join(SEPARATOR)
   end
 
+  def company
+    company_object.to_s
+  end
+
   def to_s
-    "#{company.short_name} (#{name})"
+    name
   end
 
   private
