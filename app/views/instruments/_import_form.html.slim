@@ -9,7 +9,7 @@ section.import_form
           - Instrument.io_attributes.each do |attr|
             li= attr
         p For existing <strong>#{Instrument.io_attributes.first}</strong>, Instrument will be updated.
-        p For new Instruments, <strong>reference</strong>, <strong>designation</strong> and <strong>user_email</strong> cannot be empty.
+        p For new Instruments, <strong>reference</strong>, <strong>designation</strong>, <strong>company</strong>, and <strong>department</strong> cannot be empty.
         p Select a compliant CSV file and Import! it.
         = file_field_tag :file
       section.actions
