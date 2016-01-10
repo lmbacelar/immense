@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'departments/autocomplete',   to: 'departments#autocomplete'
+  get 'departments/autocomplete', to: 'departments#autocomplete'
   resources :departments do
     collection do
       post :import
