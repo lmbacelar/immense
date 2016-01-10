@@ -22,4 +22,8 @@ class Company < ActiveRecord::Base
       all
     end
   end
+
+  def to_s
+    short_name
+  end
 end
