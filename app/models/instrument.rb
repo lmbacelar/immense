@@ -1,6 +1,7 @@
 class Instrument < ActiveRecord::Base
-  belongs_to :model_object,      class_name: 'Model',      foreign_key: :model_id
-  belongs_to :department_object, class_name: 'Department', foreign_key: :department_id
+  include ObjectBelongable
+  belongs_to_object :model
+  belongs_to_object :department
 
   before_validation :set_model_object, :set_department_object
 
@@ -26,12 +27,8 @@ class Instrument < ActiveRecord::Base
   end
 
   attr_writer :brand, :model, :company, :department
-
-  delegate :brand,   to: :model_object,      allow_nil: true
-  delegate :company, to: :department_object, allow_nil: true
-
-  def model;      model_object.to_s;      end
-  def department; department_object.to_s; end
+  delegate    :brand,   to: :model_object,      allow_nil: true
+  delegate    :company, to: :department_object, allow_nil: true
 
   def validate_ownership user
     if department.include? user.department
