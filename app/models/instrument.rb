@@ -1,13 +1,11 @@
 class Instrument < ActiveRecord::Base
-  belongs_to :department_object, class_name: 'Department', foreign_key: :department_id, required: true
-  belongs_to :model_object,      class_name: 'Model',      foreign_key: :model_id,      required: true
+  belongs_to :model_object,      class_name: 'Model',      foreign_key: :model_id
+  belongs_to :department_object, class_name: 'Department', foreign_key: :department_id
 
   before_validation :set_model_object, :set_department_object
 
   validates_uniqueness_of :reference
-  validates_presence_of   :reference, :designation, :department
-
-  attr_writer :brand, :model, :department
+  validates_presence_of   :reference, :designation, :company, :department
 
   include Serializable
   io_attributes :reference,:designation, :brand, :model, :part_number, :serial_number, :remarks, :department
@@ -27,17 +25,13 @@ class Instrument < ActiveRecord::Base
     end
   end
 
-  def brand
-    @brand ||= model_object&.brand
-  end
+  attr_writer :brand, :model, :company, :department
 
-  def model
-    @model ||= model_object&.name
-  end
+  delegate :brand,   to: :model_object,      allow_nil: true
+  delegate :company, to: :department_object, allow_nil: true
 
-  def department
-    @department ||= department_object&.name
-  end
+  def model;      model_object.to_s;      end
+  def department; department_object.to_s; end
 
   def validate_ownership user
     if department.include? user.department
@@ -50,11 +44,14 @@ class Instrument < ActiveRecord::Base
 
   private
     def set_model_object
-      brand_object = Brand.where(name: brand || '').first_or_create
-      self.model_object = brand_object.models.where(name: model || '').first_or_create
+      brand_object      = Brand.where(name: @brand || '').first_or_create
+      self.model_object = brand_object.models.where(name: @model || '').first_or_create
     end
 
     def set_department_object
-      self.department_object = Department.where(name: department).first if department
+      if @company && @department
+        company_object         = Company.where(short_name: @company).first
+        self.department_object = company_object.departments.where(name: @department).first
+      end
     end
 end
