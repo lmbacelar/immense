@@ -15,7 +15,7 @@
   { name: 'ME/QS/LB/CA', designation: 'Calibrations' },
   { name: 'ME/QS/LB/ND', designation: 'Non-Destructive Testing' },
   { name: 'ME/QS/LB/FQ', designation: 'Physical and Chemical Testing' }
-].each { |d| Department.create d }
+].each { |d| Company.first.departments.create d }
 
 [ { email: 'admin@test.com',    password: '00000000', role: 'admin',   department: 'ME'    },
   { email: 'manager1@test.com', password: '00000000', role: 'manager', department: 'ME/QS' },

@@ -104,9 +104,10 @@ CREATE TABLE departments (
     name character varying DEFAULT ''::character varying NOT NULL,
     designation character varying DEFAULT ''::character varying NOT NULL,
     slug character varying NOT NULL,
-    parent_id integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    company_id integer NOT NULL,
+    parent_id integer
 );
 
 
@@ -479,10 +480,24 @@ CREATE INDEX index_companies_on_vat_prefix ON companies USING btree (vat_prefix)
 
 
 --
+-- Name: index_departments_on_company_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_departments_on_company_id ON departments USING btree (company_id);
+
+
+--
 -- Name: index_departments_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_departments_on_name ON departments USING btree (name);
+
+
+--
+-- Name: index_departments_on_parent_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_departments_on_parent_id ON departments USING btree (parent_id);
 
 
 --
@@ -642,6 +657,14 @@ ALTER TABLE ONLY models
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT fk_rails_f29bf9cdf2 FOREIGN KEY (department_id) REFERENCES departments(id);
+
+
+--
+-- Name: fk_rails_f911441942; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY departments
+    ADD CONSTRAINT fk_rails_f911441942 FOREIGN KEY (company_id) REFERENCES companies(id);
 
 
 --
