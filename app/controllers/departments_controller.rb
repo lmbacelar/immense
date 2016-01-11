@@ -17,7 +17,7 @@ class DepartmentsController < ApplicationController
   end
 
   def new
-    @department = Department.new
+    @department = Department.new company: current_user.company
     authorize @department
     render 'shared/new_or_edit'
   end
@@ -80,6 +80,6 @@ class DepartmentsController < ApplicationController
     end
 
     def department_params
-      params.require(:department).permit(:name, :full_name, :designation)
+      params.require(:department).permit(:name, :full_name, :designation, :company)
     end
 end
