@@ -20,6 +20,6 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def autocomplete?
-    admin? || manager? || auditor?
+    admin?
   end
 end
