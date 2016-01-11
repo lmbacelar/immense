@@ -66,6 +66,12 @@ class CompaniesController < ApplicationController
     redirect_to companies_url, notice: 'Companies imported.'
   end
 
+  def autocomplete
+    companies = Company.where("short_name ilike '#{params[:term]}%'").order(:short_name)
+    authorize companies
+    render json: companies.pluck(:short_name)
+  end
+
   private
     def set_company
       @company = Company.friendly.find params[:id]
