@@ -9,7 +9,7 @@ module ObjectBelongable
 
       # define resource reader
       define_method resource do
-        send(resource_object).send :to_s
+        ( send(resource_object) || instance_variable_get("@#{resource}") ).to_s
       end
     end
   end
