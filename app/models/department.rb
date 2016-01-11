@@ -8,7 +8,7 @@ class Department < ActiveRecord::Base
   has_many   :children, class_name: 'Department', foreign_key: :parent_id
   has_many   :instruments
 
-  validates :name, uniqueness: true
+  validates :name, presence: true, uniqueness: true
   validate  :parent_existence
 
   default_scope { order 'name ASC' }
