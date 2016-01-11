@@ -12,7 +12,7 @@ section.content
           = f.input :serial_number
           = f.input :part_number
         section.primary_details
-          = f.input :company, disabled: true
+          = f.input :company, disabled: !policy(@instrument).edit_company?
           = f.input :department
         section.secondary_details
           = f.input :remarks
