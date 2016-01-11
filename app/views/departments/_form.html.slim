@@ -5,6 +5,7 @@ section.content
 
       fieldset
         section.primary_details
+          = f.input :company, disabled: !policy(@department).edit_company?
           = f.input :name
           = f.input :designation
 
