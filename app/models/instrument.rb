@@ -27,8 +27,8 @@ class Instrument < ActiveRecord::Base
   end
 
   attr_writer :brand, :model, :company, :department
-  delegate    :brand,   to: :model_object,      allow_nil: true
-  delegate    :company, to: :department_object, allow_nil: true
+  def brand;   model_object&.brand        || @brand;   end
+  def company; department_object&.company || @company; end
 
   def validate_ownership user
     if department.include? user.department
