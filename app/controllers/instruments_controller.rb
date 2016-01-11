@@ -17,7 +17,7 @@ class InstrumentsController < ApplicationController
   end
 
   def new
-    @instrument = Instrument.new
+    @instrument = Instrument.new company: current_user&.company, department: current_user&.department
     authorize @instrument
     render 'shared/new_or_edit'
   end
@@ -75,6 +75,6 @@ class InstrumentsController < ApplicationController
 
     def instrument_params
       params.require(:instrument).permit(:reference, :designation, :part_number, :serial_number, :remarks,
-                                         :brand, :model, :department)
+                                         :brand, :model, :company, :department)
     end
 end
