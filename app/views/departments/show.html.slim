@@ -4,6 +4,10 @@ header.content_title
 section.content
   section.details
     h3= @department.designation
+    section.primary_details
+      dl
+        dt Company
+        dd= @department.company
 
   section.actions
     -if policy(@department).edit?
