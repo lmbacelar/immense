@@ -3,8 +3,12 @@ class InstrumentPolicy < ApplicationPolicy
     admin? || manager? || auditor?
   end
 
-  def create?
+  def new?
     admin? || manager?
+  end
+
+  def create?
+    admin? || (manager? && owner?)
   end
 
   def update?
@@ -16,6 +20,10 @@ class InstrumentPolicy < ApplicationPolicy
   end
 
   def import?
+    admin?
+  end
+
+  def edit_company?
     admin?
   end
 end
