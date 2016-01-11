@@ -2,6 +2,10 @@ class DepartmentPresenter < BasePresenter
   presents :department
   delegate :designation, to: :department
 
+  def details
+    "<strong>co.</strong> #{department.company}".html_safe
+  end
+
   def name
     if h.policy(department).show?
       h.link_to department.name, department
