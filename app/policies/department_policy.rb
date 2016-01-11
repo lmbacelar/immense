@@ -22,4 +22,8 @@ class DepartmentPolicy < ApplicationPolicy
   def autocomplete?
     true
   end
+
+  def edit_company?
+    admin?
+  end
 end
