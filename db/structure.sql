@@ -30,6 +30,46 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: addresses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE addresses (
+    id integer NOT NULL,
+    line1 character varying DEFAULT ''::character varying NOT NULL,
+    line2 character varying DEFAULT ''::character varying NOT NULL,
+    city character varying DEFAULT ''::character varying NOT NULL,
+    zip character varying DEFAULT ''::character varying NOT NULL,
+    state character varying DEFAULT ''::character varying NOT NULL,
+    country character varying DEFAULT ''::character varying NOT NULL,
+    latitude double precision,
+    longitude double precision,
+    addressable_id integer NOT NULL,
+    addressable_type character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE addresses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE addresses_id_seq OWNED BY addresses.id;
+
+
+--
 -- Name: brands; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -321,6 +361,13 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY addresses ALTER COLUMN id SET DEFAULT nextval('addresses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY brands ALTER COLUMN id SET DEFAULT nextval('brands_id_seq'::regclass);
 
 
@@ -371,6 +418,14 @@ ALTER TABLE ONLY pg_search_documents ALTER COLUMN id SET DEFAULT nextval('pg_sea
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY addresses
+    ADD CONSTRAINT addresses_pkey PRIMARY KEY (id);
 
 
 --
@@ -435,6 +490,13 @@ ALTER TABLE ONLY pg_search_documents
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_addresses_on_addressable_id_and_addressable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_addresses_on_addressable_id_and_addressable_type ON addresses USING btree (addressable_id, addressable_type);
 
 
 --
@@ -688,4 +750,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151125205939');
 INSERT INTO schema_migrations (version) VALUES ('20151128182408');
 
 INSERT INTO schema_migrations (version) VALUES ('20160102230204');
+
+INSERT INTO schema_migrations (version) VALUES ('20160112191647');
 
