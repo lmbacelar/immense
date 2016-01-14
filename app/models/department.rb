@@ -7,6 +7,7 @@ class Department < ActiveRecord::Base
   belongs_to :parent,   class_name: 'Department'
   has_many   :children, class_name: 'Department', foreign_key: :parent_id
   has_many   :instruments
+  has_one    :address, as: :addressable, dependent: :destroy
 
   validates :name, presence: true, uniqueness: true
   validate  :parent_existence
