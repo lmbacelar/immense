@@ -8,10 +8,6 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   private
-    def set_filename_and_render
-      response.headers['Content-Disposition'] = "attachment; filename=\"#{export_filename}\""
-    end
-
     def export_filename
       "#{params[:controller]}_#{Time.zone.now.strftime('%Y%m%d_%H%M%S')}.#{params[:format]}"
     end
